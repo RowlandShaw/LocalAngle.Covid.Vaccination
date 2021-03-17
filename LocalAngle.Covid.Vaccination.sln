@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalAngle.Covid.Vaccination.Agent", "LocalAngle.Covid.Vaccination.Agent\LocalAngle.Covid.Vaccination.Agent.csproj", "{7BFF33B0-9AFF-4167-A7A4-3F30D939329D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalAngle.Covid.Vaccination.Models", "LocalAngle.Covid.Vaccination.Models\LocalAngle.Covid.Vaccination.Models.csproj", "{0AC32DCF-5E62-4DE6-942F-44444108C58F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7BFF33B0-9AFF-4167-A7A4-3F30D939329D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BFF33B0-9AFF-4167-A7A4-3F30D939329D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BFF33B0-9AFF-4167-A7A4-3F30D939329D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BFF33B0-9AFF-4167-A7A4-3F30D939329D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AC32DCF-5E62-4DE6-942F-44444108C58F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AC32DCF-5E62-4DE6-942F-44444108C58F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AC32DCF-5E62-4DE6-942F-44444108C58F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AC32DCF-5E62-4DE6-942F-44444108C58F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8E6A8A2-BAA7-4CD2-A55E-1E15DB99443B}
+	EndGlobalSection
+EndGlobal
