@@ -9,18 +9,20 @@
 
         public string Name { get; set; }
 
-        public int PopulationUnder16 { get; set; }
+        public double PopulationUnder16 { get; set; }
 
-        public int Population16To59 { get; set; }
+        public double Population16To54 { get; set; }
 
-        public int Population60To64 { get; set; }
+        public double Population55To59 { get; set; }
 
-        public int Population65To69 { get; set; }
+        public double Population60To64 { get; set; }
 
-        public int Population70To74 { get; set; }
+        public double Population65To69 { get; set; }
 
-        public int Population75To79 { get; set; }
+        public double Population70To74 { get; set; }
 
-        public int PopulationOver80 { get; set; }
+        public double Population75To79 { get; set; }
+
+        public double PopulationOver80 { get; set; }
     }
 }

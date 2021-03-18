@@ -17,10 +17,25 @@ namespace LocalAngle.Covid.Vaccination.Agent
             Console.WriteLine("Hello World!");
             var mostRecentSpreadsheetUrl = GetMostRecentSpreadsheetUrl();
             var xb = LoadExcel(mostRecentSpreadsheetUrl);
+            var pops = GetPopulationEstimates(xb);
+            var populationEstimates = new Dictionary<string, StatisticalArea>();
+            foreach (var est in pops)
+            {
+                populationEstimates.Add(est.Code, est);
+            }
+
             var msoa = GetMsoaVaccinations(xb);
             foreach (var area in msoa)
             {
-                Console.WriteLine($"{area.Code} ({area.Name}) {area.Population16To59}");
+                var pop = populationEstimates[area.Code];
+                Console.WriteLine($"{area.Code} ({area.Name}) " +
+                    $"{area.Population16To54 / pop.Population16To54:P2} " +
+                    $"{area.Population55To59 / pop.Population55To59:P2} " +
+                    $"{area.Population60To64 / pop.Population60To64:P2} " +
+                    $"{area.Population65To69 / pop.Population65To69:P2} " +
+                    $"{area.Population70To74 / pop.Population70To74:P2} " +
+                    $"{area.Population75To79 / pop.Population75To79:P2} " +
+                    $"{area.PopulationOver80 / pop.PopulationOver80:P2} ");
             }
             Console.ReadKey();
         }
@@ -49,33 +64,67 @@ namespace LocalAngle.Covid.Vaccination.Agent
             return new XLWorkbook(str);
         }
 
-        private static IEnumerable<StatisticalArea> GetMsoaVaccinations(XLWorkbook xb)
+        private static IEnumerable<StatisticalArea> GetPopulationEstimates(XLWorkbook xb)
         {
-            IXLWorksheet xs;
-            if (!xb.TryGetWorksheet("MSOA", out xs))
+            if (!xb.TryGetWorksheet("Population estimates (NIMS)", out IXLWorksheet xs))
             {
                 throw new InvalidOperationException("Really were expected that tab to exist. Boo.");
             }
 
             // Data should start be in F16:M6806
-            var range = xs.Range("F16", "M6806");
+            var range = xs.Range("N16", "W6806");
             var rowCount = range.RowCount();
 
             for (var i = 1; i <= rowCount; i++)
             {
                 var row = range.Row(i);
 
-                var result = new StatisticalArea();
+                var result = new StatisticalArea
+                {
+                    Code = row.Cell(1).Value.ToString(),
+                    Name = row.Cell(2).Value.ToString(),
 
-                result.Code = row.Cell(1).Value.ToString();
-                result.Name = row.Cell(2).Value.ToString();
+                    Population16To54 = (double)row.Cell(4).Value,
+                    Population55To59 = (double)row.Cell(5).Value,
+                    Population60To64 = (double)row.Cell(6).Value,
+                    Population65To69 = (double)row.Cell(7).Value,
+                    Population70To74 = (double)row.Cell(8).Value,
+                    Population75To79 = (double)row.Cell(9).Value,
+                    PopulationOver80 = (double)row.Cell(10).Value
+                };
 
-                result.Population16To59 = Convert.ToInt32(row.Cell(3).Value);
-                result.Population60To64 = Convert.ToInt32(row.Cell(4).Value);
-                result.Population65To69 = Convert.ToInt32(row.Cell(5).Value);
-                result.Population70To74 = Convert.ToInt32(row.Cell(6).Value);
-                result.Population75To79 = Convert.ToInt32(row.Cell(7).Value);
-                result.PopulationOver80 = Convert.ToInt32(row.Cell(8).Value);
+                yield return result;
+            }
+        }
+
+        private static IEnumerable<StatisticalArea> GetMsoaVaccinations(XLWorkbook xb)
+        {
+            if (!xb.TryGetWorksheet("MSOA", out IXLWorksheet xs))
+            {
+                throw new InvalidOperationException("Really were expected that tab to exist. Boo.");
+            }
+
+            // Data should start be in F16:M6806
+            var range = xs.Range("F16", "N6806");
+            var rowCount = range.RowCount();
+
+            for (var i = 1; i <= rowCount; i++)
+            {
+                var row = range.Row(i);
+
+                var result = new StatisticalArea
+                {
+                    Code = row.Cell(1).Value.ToString(),
+                    Name = row.Cell(2).Value.ToString(),
+
+                    Population16To54 = (double)row.Cell(3).Value,
+                    Population55To59 = (double)row.Cell(4).Value,
+                    Population60To64 = (double)row.Cell(5).Value,
+                    Population65To69 = (double)row.Cell(6).Value,
+                    Population70To74 = (double)row.Cell(7).Value,
+                    Population75To79 = (double)row.Cell(8).Value,
+                    PopulationOver80 = (double)row.Cell(9).Value
+                };
 
                 yield return result;
             }
