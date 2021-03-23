@@ -1,6 +1,8 @@
 ﻿using ClosedXML.Excel;
 using HtmlAgilityPack;
 using LocalAngle.Covid.Vaccination.Models;
+using log4net;
+using log4net.Config;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,19 +13,24 @@ namespace LocalAngle.Covid.Vaccination.Agent
     internal static class Program
     {
         private static readonly Uri FileList = new Uri("https://www.england.nhs.uk/statistics/statistical-work-areas/covid-19-vaccinations/");
+        private static readonly ILog log = LogManager.GetLogger(typeof(Program));
 
         private static void Main()
         {
+            XmlConfigurator.Configure();
+
+            log.Debug("Starting");
+
             var mostRecentSpreadsheetUrl = GetMostRecentSpreadsheetUrl();
             var xb = LoadExcel(mostRecentSpreadsheetUrl);
-            var pops = GetPopulationEstimates(xb);
+            var pops = GetMsoaPopulationEstimates(xb);
             var populationEstimates = new Dictionary<string, StatisticalArea>();
             foreach (var est in pops)
             {
                 populationEstimates.Add(est.Code, est);
             }
 
-            Console.WriteLine($"Code\tName\t" +
+            log.Info($"Code\tName\t" +
                 $"16 To 54\t" +
                 $"55 To 59\t" +
                 $"60 To 64\t" +
@@ -35,7 +42,7 @@ namespace LocalAngle.Covid.Vaccination.Agent
             foreach (var area in msoa)
             {
                 var pop = populationEstimates[area.Code];
-                Console.WriteLine($"{area.Code}\t{area.Name}\t" +
+                log.Info($"{area.Code}\t{area.Name}\t" +
                     $"{area.Population16To54 / pop.Population16To54:P2}\t" +
                     $"{area.Population55To59 / pop.Population55To59:P2}\t" +
                     $"{area.Population60To64 / pop.Population60To64:P2}\t" +
@@ -46,11 +53,14 @@ namespace LocalAngle.Covid.Vaccination.Agent
                     $"{area.PopulationOverall / pop.PopulationOverall:P2}"
                     );
             }
-            Console.ReadKey();
+
+            log.Debug("Complete");
         }
 
         private static Uri GetMostRecentSpreadsheetUrl()
         {
+            log.Debug($"Determining latest data available from {FileList}");
+
             var client = new HtmlWeb();
             var doc = client.Load(FileList);
 
@@ -61,6 +71,7 @@ namespace LocalAngle.Covid.Vaccination.Agent
 
         private static XLWorkbook LoadExcel(Uri uri)
         {
+            log.Debug($"Downloading {uri}");
             var client = new HttpClient();
 
             var response = client.GetAsync(uri).Result;
@@ -73,7 +84,7 @@ namespace LocalAngle.Covid.Vaccination.Agent
             return new XLWorkbook(str);
         }
 
-        private static IEnumerable<StatisticalArea> GetPopulationEstimates(XLWorkbook xb)
+        private static IEnumerable<StatisticalArea> GetMsoaPopulationEstimates(XLWorkbook xb)
         {
             if (!xb.TryGetWorksheet("Population estimates (NIMS)", out IXLWorksheet xs))
             {
@@ -81,6 +92,7 @@ namespace LocalAngle.Covid.Vaccination.Agent
             }
 
             // Data should start be in F16:M6806
+            // TODO: Verify headings are as we expect.
             var range = xs.Range("N16", "W6806");
             var rowCount = range.RowCount();
 
@@ -114,6 +126,7 @@ namespace LocalAngle.Covid.Vaccination.Agent
             }
 
             // Data should start be in F16:M6806
+            // TODO: Verify headings are as we expect.
             var range = xs.Range("F16", "N6806");
             var rowCount = range.RowCount();
 
