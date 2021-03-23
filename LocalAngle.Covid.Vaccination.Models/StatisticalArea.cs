@@ -24,5 +24,13 @@
         public double Population75To79 { get; set; }
 
         public double PopulationOver80 { get; set; }
+
+        public double PopulationOverall
+        {
+            get
+            {
+                return Population16To54 + Population55To59 + Population60To64 + Population65To69 + Population70To74 + Population75To79 + PopulationOver80;
+            }
+        }
     }
 }

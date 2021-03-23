@@ -14,7 +14,6 @@ namespace LocalAngle.Covid.Vaccination.Agent
 
         private static void Main()
         {
-            Console.WriteLine("Hello World!");
             var mostRecentSpreadsheetUrl = GetMostRecentSpreadsheetUrl();
             var xb = LoadExcel(mostRecentSpreadsheetUrl);
             var pops = GetPopulationEstimates(xb);
@@ -24,18 +23,28 @@ namespace LocalAngle.Covid.Vaccination.Agent
                 populationEstimates.Add(est.Code, est);
             }
 
+            Console.WriteLine($"Code\tName\t" +
+                $"16 To 54\t" +
+                $"55 To 59\t" +
+                $"60 To 64\t" +
+                $"65 To 69\t" +
+                $"70 To 74\t" +
+                $"75 To 79\t" +
+                $"Over 80\tOverall");
             var msoa = GetMsoaVaccinations(xb);
             foreach (var area in msoa)
             {
                 var pop = populationEstimates[area.Code];
-                Console.WriteLine($"{area.Code} ({area.Name}) " +
-                    $"{area.Population16To54 / pop.Population16To54:P2} " +
-                    $"{area.Population55To59 / pop.Population55To59:P2} " +
-                    $"{area.Population60To64 / pop.Population60To64:P2} " +
-                    $"{area.Population65To69 / pop.Population65To69:P2} " +
-                    $"{area.Population70To74 / pop.Population70To74:P2} " +
-                    $"{area.Population75To79 / pop.Population75To79:P2} " +
-                    $"{area.PopulationOver80 / pop.PopulationOver80:P2} ");
+                Console.WriteLine($"{area.Code}\t{area.Name}\t" +
+                    $"{area.Population16To54 / pop.Population16To54:P2}\t" +
+                    $"{area.Population55To59 / pop.Population55To59:P2}\t" +
+                    $"{area.Population60To64 / pop.Population60To64:P2}\t" +
+                    $"{area.Population65To69 / pop.Population65To69:P2}\t" +
+                    $"{area.Population70To74 / pop.Population70To74:P2}\t" +
+                    $"{area.Population75To79 / pop.Population75To79:P2}\t" +
+                    $"{area.PopulationOver80 / pop.PopulationOver80:P2}\t" +
+                    $"{area.PopulationOverall / pop.PopulationOverall:P2}"
+                    );
             }
             Console.ReadKey();
         }
