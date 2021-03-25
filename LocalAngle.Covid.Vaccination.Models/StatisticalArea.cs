@@ -11,7 +11,9 @@
 
         public double PopulationUnder16 { get; set; }
 
-        public double Population16To54 { get; set; }
+        public double Population16To49 { get; set; }
+
+        public double Population50To54 { get; set; }
 
         public double Population55To59 { get; set; }
 
@@ -29,7 +31,7 @@
         {
             get
             {
-                return Population16To54 + Population55To59 + Population60To64 + Population65To69 + Population70To74 + Population75To79 + PopulationOver80;
+                return Population16To49 + Population50To54 + Population55To59 + Population60To64 + Population65To69 + Population70To74 + Population75To79 + PopulationOver80;
             }
         }
     }

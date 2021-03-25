@@ -43,7 +43,8 @@ namespace LocalAngle.Covid.Vaccination.Agent
             {
                 var pop = populationEstimates[area.Code];
                 log.Info($"{area.Code}\t{area.Name}\t" +
-                    $"{area.Population16To54 / pop.Population16To54:P2}\t" +
+                    $"{area.Population16To49 / pop.Population16To49:P2}\t" +
+                    $"{area.Population50To54 / pop.Population50To54:P2}\t" +
                     $"{area.Population55To59 / pop.Population55To59:P2}\t" +
                     $"{area.Population60To64 / pop.Population60To64:P2}\t" +
                     $"{area.Population65To69 / pop.Population65To69:P2}\t" +
@@ -91,9 +92,15 @@ namespace LocalAngle.Covid.Vaccination.Agent
                 throw new InvalidOperationException("Really were expected that tab to exist. Boo.");
             }
 
-            // Data should start be in F16:M6806
-            // TODO: Verify headings are as we expect.
-            var range = xs.Range("N16", "W6806");
+            // Verify headings are as we expect.
+            const string startColumn = "O";
+            var sanityCheck = xs.Cell($"{startColumn}10");
+            if (!string.Equals(sanityCheck.Value.ToString(), "NIMS population mapped to MSOA", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException("Excel sheet not in the expected format - have additional age bands been added?");
+            }
+
+            var range = xs.Range($"{startColumn}16", "Y6806");
             var rowCount = range.RowCount();
 
             for (var i = 1; i <= rowCount; i++)
@@ -105,13 +112,14 @@ namespace LocalAngle.Covid.Vaccination.Agent
                     Code = row.Cell(1).Value.ToString(),
                     Name = row.Cell(2).Value.ToString(),
 
-                    Population16To54 = (double)row.Cell(4).Value,
-                    Population55To59 = (double)row.Cell(5).Value,
-                    Population60To64 = (double)row.Cell(6).Value,
-                    Population65To69 = (double)row.Cell(7).Value,
-                    Population70To74 = (double)row.Cell(8).Value,
-                    Population75To79 = (double)row.Cell(9).Value,
-                    PopulationOver80 = (double)row.Cell(10).Value
+                    Population16To49 = (double)row.Cell(4).Value,
+                    Population50To54 = (double)row.Cell(5).Value,
+                    Population55To59 = (double)row.Cell(6).Value,
+                    Population60To64 = (double)row.Cell(7).Value,
+                    Population65To69 = (double)row.Cell(8).Value,
+                    Population70To74 = (double)row.Cell(9).Value,
+                    Population75To79 = (double)row.Cell(10).Value,
+                    PopulationOver80 = (double)row.Cell(11).Value
                 };
 
                 yield return result;
@@ -125,9 +133,15 @@ namespace LocalAngle.Covid.Vaccination.Agent
                 throw new InvalidOperationException("Really were expected that tab to exist. Boo.");
             }
 
-            // Data should start be in F16:M6806
-            // TODO: Verify headings are as we expect.
-            var range = xs.Range("F16", "N6806");
+            // Verify headings are as we expect.
+            const string lastColumn = "O";
+            var sanityCheck = xs.Cell($"{lastColumn}13");
+            if (!string.Equals(sanityCheck.Value.ToString(), "80+", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException("Excel sheet not in the expected format - have additional age bands been added?");
+            }
+
+            var range = xs.Range("F16", $"{lastColumn}6806");
             var rowCount = range.RowCount();
 
             for (var i = 1; i <= rowCount; i++)
@@ -139,13 +153,14 @@ namespace LocalAngle.Covid.Vaccination.Agent
                     Code = row.Cell(1).Value.ToString(),
                     Name = row.Cell(2).Value.ToString(),
 
-                    Population16To54 = (double)row.Cell(3).Value,
-                    Population55To59 = (double)row.Cell(4).Value,
-                    Population60To64 = (double)row.Cell(5).Value,
-                    Population65To69 = (double)row.Cell(6).Value,
-                    Population70To74 = (double)row.Cell(7).Value,
-                    Population75To79 = (double)row.Cell(8).Value,
-                    PopulationOver80 = (double)row.Cell(9).Value
+                    Population16To49 = (double)row.Cell(3).Value,
+                    Population50To54 = (double)row.Cell(4).Value,
+                    Population55To59 = (double)row.Cell(5).Value,
+                    Population60To64 = (double)row.Cell(6).Value,
+                    Population65To69 = (double)row.Cell(7).Value,
+                    Population70To74 = (double)row.Cell(8).Value,
+                    Population75To79 = (double)row.Cell(9).Value,
+                    PopulationOver80 = (double)row.Cell(10).Value
                 };
 
                 yield return result;
