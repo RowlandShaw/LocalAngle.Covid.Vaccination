@@ -36,7 +36,8 @@ namespace LocalAngle.Covid.Vaccination.Agent
             }
 
             log.Info($"Code\tName\t" +
-                $"16 To 54\t" +
+                $"16 To 49\t" +
+                $"50 To 54\t" +
                 $"55 To 59\t" +
                 $"60 To 64\t" +
                 $"65 To 69\t" +
