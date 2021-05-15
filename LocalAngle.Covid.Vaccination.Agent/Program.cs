@@ -54,6 +54,7 @@ namespace LocalAngle.Covid.Vaccination.Agent
                 var pop = populationEstimates[area.Code];
                 log.Info($"{area.Code}\t{area.Name}\t" +
                     $"{area.Population16To39 / pop.Population16To39:P2}\t" +
+                    $"{area.Population40To44 / pop.Population40To44:P2}\t" +
                     $"{area.Population45To49 / pop.Population45To49:P2}\t" +
                     $"{area.Population50To54 / pop.Population50To54:P2}\t" +
                     $"{area.Population55To59 / pop.Population55To59:P2}\t" +
@@ -71,6 +72,7 @@ namespace LocalAngle.Covid.Vaccination.Agent
                 var pop = populationEstimates[area.Code];
                 log.Info($"{area.Code}\t{area.Name}\t" +
                     $"{area.Population16To39 / pop.Population16To39:P2}\t" +
+                    $"{area.Population40To44 / pop.Population40To44:P2}\t" +
                     $"{area.Population45To49 / pop.Population45To49:P2}\t" +
                     $"{area.Population50To54 / pop.Population50To54:P2}\t" +
                     $"{area.Population55To59 / pop.Population55To59:P2}\t" +
@@ -88,6 +90,7 @@ namespace LocalAngle.Covid.Vaccination.Agent
                 var pop = populationEstimates[area.Code];
                 log.Info($"{area.Code}\t{area.Name}\t" +
                     $"{area.Population16To39 / pop.Population16To39:P2}\t" +
+                    $"{area.Population40To44 / pop.Population40To44:P2}\t" +
                     $"{area.Population45To49 / pop.Population45To49:P2}\t" +
                     $"{area.Population50To54 / pop.Population50To54:P2}\t" +
                     $"{area.Population55To59 / pop.Population55To59:P2}\t" +
