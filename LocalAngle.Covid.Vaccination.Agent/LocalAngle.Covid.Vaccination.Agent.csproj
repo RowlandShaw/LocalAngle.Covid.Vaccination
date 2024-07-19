@@ -6,7 +6,7 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.102.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
-    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="log4net" Version="2.0.17" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LocalAngle.Covid.Vaccination.Models\LocalAngle.Covid.Vaccination.Models.csproj" />
