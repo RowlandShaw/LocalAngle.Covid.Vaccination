@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.104.1" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.68" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.69" />
     <PackageReference Include="log4net" Version="3.0.2" />
   </ItemGroup>
   <ItemGroup>
